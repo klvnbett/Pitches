@@ -47,7 +47,7 @@ class Pitch(db.Model):
     pitch_title = db.Column(db.String)
     pitch_category = db.Column(db.String)
     pitch_comment = db.Column(db.String)
-    posted = db.Column(db.DateTime, default=datetime.utcnow)
+    # posted = db.Column(db.DateTime, default=datetime.utcnow)
     likes = db.Column(db.Integer)
     dislikes = db.Column(db.Integer)
 
