@@ -6,4 +6,16 @@ class Config:
     UPLOADED_PHOTOS_DEST='app/static/photos'
 
     #email configuration
+
+    class DevConfig(config):
+        Debug =True
+
+
+    class ProdConfig(Config):
+        pass
+
+    Config_options ={
+        'development':DevConfig,
+        'production' :ProdConfig
+    }
     
