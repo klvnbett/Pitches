@@ -1,6 +1,6 @@
 from flask import render_template,request,redirect,url_for,abort
 from . import main
-from app.auth.forms import UpdateProfileForm
+from app.auth.forms import Pitch, UpdateProfileForm
 from .. import db,photos
 from .. models import User
 from flask_login import login_required
@@ -13,13 +13,6 @@ def index():
     '''
     return render_template('index.html')
 
-
-@main.route('/')
-def login():
-    '''
-    View root page function that returns the index page and its data.
-    '''
-    return render_template('index.html')
 
 @main.route('/user/<uname>')
 def profile(uname):
