@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {%block content%}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container text-center">
+        <h2 class="card-title h1-responsive font-bold">Production Pitches</h2>
+    </div>
+</div>
+<hr>
+<div class="row">
+    {%for pickup in pickupPitches%}
+    <h2>{{pickup.pitch_category}}</h2>
+    <h5>{{pickup.pitch_title}}</h5>
+    <h5>{{pickup.pitch_comment}}</h5>
+    {%endfor%}
+</div>
+</div>
+{%endblock%}

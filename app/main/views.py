@@ -1,9 +1,9 @@
 from app.auth.forms import UpdateProfileForm
 from flask import render_template,request,redirect,url_for,abort
 from . import main
-from .forms import PitchForm
+from .forms import CommentForm, PitchForm
 from .. import db,photos
-from .. models import Pitch, User
+from .. models import Comment, Pitch, User
 from flask_login import login_required, current_user
 
 #views
@@ -12,7 +12,9 @@ def index():
     '''
     View root page function that returns the index page and its data.
     '''
-    return render_template('index.html')
+    form_pitch = PitchForm()
+    all_pitches = Pitch.query.order_by(Pitch.posted).all()
+    return render_template('index.html', pitches = all_pitches)
 
 
 @main.route('/user/<uname>')
@@ -69,21 +71,69 @@ def new_pitch():
         pitch_title = form_pitch.pitch_title.data
         pitch_category = form_pitch.pitch_category.data
         pitch_comment = form_pitch.pitch_comment.data
-        
         new_pitch = Pitch(pitch_title=pitch_title, pitch_category=pitch_category,pitch_comment=pitch_comment, user=current_user)
         
         new_pitch.save_pitch()
         db.session.add(new_pitch)
         db.session.commit()
         
-        return redirect(url_for('main.pitches'))
+        return redirect(url_for('main.index'))
     else:
         all_pitches = Pitch.query.order_by(Pitch.posted).all()
     
     return render_template('newpitch.html', pitches=all_pitches,form_pitch = form_pitch)
 
-@main.route('/pitches',methods=['GET'])
+@main.route('/comment/<int:id>',methods= ['POST','GET'])
 @login_required
-def pitches():
-    all_pitches = Pitch.query.order_by(Pitch.posted).all()
-    return render_template('pitches.html',pitches=all_pitches)
+def viewPitch(id):
+    eachpitch = Pitch.getPitchId(id)
+    comments = Comment.getComments(id)
+
+    if request.args.get("like"):
+        eachpitch=0;
+        eachpitch.likes = eachpitch.likes + 1
+
+        db.session.add(eachpitch)
+        db.session.commit()
+
+        return redirect(eachpitch)
+
+    elif request.args.get("dislike"):
+        eachpitch=0;
+
+        db.session.add(eachpitch)
+        db.session.commit()
+
+        return redirect(eachpitch)
+
+    commentForm = CommentForm()
+    if commentForm.validate_on_submit():
+        comment = commentForm.text.data
+
+        newComment = Comment(comment = comment,user = current_user,pitch_id= id)
+
+        newComment.saveComment()
+
+    return render_template('comment.html',commentForm = commentForm,comments = comments,pitch = eachpitch)
+
+
+
+@main.route('/category/product',methods= ['GET'])
+def displayProductCategory():
+    productPitches = Pitch.get_pitches('product')
+    return render_template('category/product.html',productPitches = productPitches)
+    
+@main.route('/category/promotion',methods= ['POST','GET'])
+def displaypromotionCategory():
+    promotionPitches = Pitch.get_pitches('promotion')
+    return render_template('category/promotion.html',promotionPitches = promotionPitches)
+
+@main.route('/category/business',methods= ['POST','GET'])
+def displaybusinessCategory():
+    businessPitches = Pitch.get_pitches('business')
+    return render_template('category/business.html',businessPitches = businessPitches)
+
+@main.route('/category/pickup',methods= ['POST','GET'])
+def displayPickupCategory():
+    pickupPitches = Pitch.get_pitches('pickup')
+    return render_template('category/pickup.html',pickupPitches = pickupPitches)

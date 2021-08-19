@@ -8,6 +8,6 @@ class PitchForm(FlaskForm):
     pitch_comment = StringField('What is in your mind?')
     submit = SubmitField('Pitch')
     
-class Comment(FlaskForm):
+class CommentForm(FlaskForm):
     comment = TextAreaField('What do you think about this?', validators=[Required()])
     submit = SubmitField('Send')
