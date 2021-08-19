@@ -1,3 +1,4 @@
+from datetime import datetime
 from . import db
 from flask_login import UserMixin
 from . import login_manager
@@ -8,8 +9,9 @@ class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), index=True, unique=True, nullable=False)
-    email = db.Column(db.String(255), unique=True, index=True, nullable=False)
-    comment_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
+    email = db.Column(db.String(255), index=True, unique=True, nullable=False)
+    comment = db.relationship('Comment',backref = 'user',lazy = "dynamic")
+    pitch = db.relationship('Pitch',backref = 'user',lazy = "dynamic")
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
@@ -34,13 +36,38 @@ class User(UserMixin, db.Model):
 
 class Comment(db.Model):
     __tablename__ = 'comments'
-    
+    user_id= db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
+    pitch_id= db.Column(db.Integer,db.ForeignKey('pitches.id'), nullable=False)
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String(255))
-    users = db.relationship('User', backref='comment', lazy="dynamic")
 
 class Pitch(db.Model):
     __tablename__ = 'pitches'
     
+    comment = db.relationship('Comment', backref='pitch', lazy='dynamic')
+    
     id = db.Column(db.Integer, primary_key=True)
-    pitch = db.Column(db.String(255), nullable=False)
+    pitch_id = db.Column(db.Integer)
+    pitch_title = db.Column(db.String)
+    pitch_category = db.Column(db.String)
+    pitch_comment = db.Column(db.String)
+    posted = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    likes = db.Column(db.Integer)
+    dislikes = db.Column(db.Integer)
+
+    
+
+    def save_pitch(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_pitches(cls, category):
+        pitches = Pitch.query.filter_by(pitch_category=category).all()
+        return pitches
+
+    @classmethod
+    def getPitchId(cls, id):
+        pitch = Pitch.query.filter_by(id=id).first()
+        return pitch
