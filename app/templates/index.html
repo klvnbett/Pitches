@@ -1,4 +1,5 @@
-{% extends 'base.html' %} {%block content %}
+{% extends 'base.html' %} {% block styles %} {{ super() }}
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}"> {% endblock %} {%block content %}
 <div class="container">
     <div class="text-center">
         <h1>WELCOME TO THE PITCH</h1>
@@ -7,23 +8,28 @@
     </div>
     <hr>
 </div>
+{%for pitch in pitches %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-6 ">
-            <h1><a href="/category/product">Product</a></h1>
+    <div class="">
+        <div>
+            <h4>Category: {{pitch.pitch_category}}</h4>
         </div>
-        <div class="col-md-6">
-            <h1><a href="/category/business">Business</a></h1>
+        <div>
+            <h6>Title: {{pitch.pitch_title}}</h6>
+        </div>
+        <div>
+            <h6>{{pitch.pitch_comment}}</h6>
+            <p>Posted on {{pitch.posted}}</p>
+            <a href="/comments/{{pitch.id}}?like=1">
+                <img src="../static/icons/thumbs_up.gif" alt="Icon" width="40px" height="40px"></a>
+            {{pitch.likes}}
+            <a href="/comments/{{pitch.id}}?dislike=1">
+                <img src="../static/icons/icons8-unlike-48.png" alt="Down" width="40px" height="40px"></a>
+            {{pitch.dislikes}}
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-md-6">
-            <h1><a href="/category/promotion">Promotional</a></h1>
-        </div>
-        <div class="col-md-6">
-            <h1><a href="/category/pickup">Pickup Lines</a></h1>
-        </div>
-    </div>
 </div>
-{%endblock%}
+
+
+{%endfor%} {%endblock%}
