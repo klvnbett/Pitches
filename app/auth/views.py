@@ -15,7 +15,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         
-        mail_message("Welcome to pitching","email/welcome_user", user.email, user=user)
+        mail_message("this is great karibu to idea pitching","email/welcome_user", user.email, user=user)
         
         return redirect(url_for('auth.login'))
         title = "New Account"
