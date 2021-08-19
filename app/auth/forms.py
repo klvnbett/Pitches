@@ -30,13 +30,3 @@ class LoginForm(FlaskForm):
 class UpdateProfileForm(FlaskForm):
     bio=TextAreaField('Tell us about you', validators=[Required()])
     submit = SubmitField('Submit')
-
-class Pitch(FlaskForm):
-    pitch_title = StringField('Pitch title', validators=[Required])
-    pitch_group = StringField('Pitch category',choices=[('Select a category','Select a category'),('Product','Product'),('Promotions','Promotions'),('Business','Business'),('Pickup lines', 'Pickup lines')], validators=[Required])
-    pitch_comment = StringField('What is in your mind?')
-    submit = SubmitField('Pitch')
-    
-class Comment(FlaskForm):
-    comment = TextAreaField('What do you think about this?', validators=[Required])
-    submit = SubmitField('Send')
