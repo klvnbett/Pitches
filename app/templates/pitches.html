@@ -1,18 +1,25 @@
-{%extends "base.html" %} {%block content%}
+{% import 'bootstrap/wtf.html' as wtf%} {%extends "base.html" %} {%block content%}
 
-<h1 class="text-center">PITCHES </h1>
+<h1 class="text-center">AMAZING PITCHES</h1>
 {%for pitch in pitches %}
 <div class="container">
-    <div>
-        <h4>{{pitch.pitch_category}}</h4>
-    </div>
-    <div>
-        <h6>{{pitch.pitch_title}}</h6>
-    </div>
-    <div>
-        <h6>{{pitch.pitch_comment}}</h6>
-        <img src="../static/icons/thumbs_up.gif" alt="Icon" width="40px" height="40px">
-        <img src="../static/icons/icons8-unlike-48.png" alt="Down" width="40px" height="40px">
+    <div class="">
+        <div>
+            <h4>Category: {{pitch.pitch_category}}</h4>
+        </div>
+        <div>
+            <h6>Title: {{pitch.pitch_title}}</h6>
+        </div>
+        <div>
+            <h6>{{pitch.pitch_comment}}</h6>
+            <p>Posted on {{pitch.posted}}</p>
+            <a href="/comments/{{pitch.id}}?like=1">
+                <!-- <img src="../static/icons/thumbsup.png" alt="Icon" width="40px" height="40px"></a> -->
+                {{pitch.likes}}
+                <a href="/comments/{{pitch.id}}?dislike=1">
+                    <!-- <img src="../static/icons/thumbsdown.png" alt="Down" width="40px" height="40px"></a> -->
+                    {{pitch.dislikes}}
+        </div>
     </div>
     <hr>
 </div>

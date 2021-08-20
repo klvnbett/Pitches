@@ -73,7 +73,7 @@ class Pitch(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_pitches(cls, category):
+    def get_pitches_by_category(cls, category):
         pitches = Pitch.query.filter_by(pitch_category=category).all()
         return pitches
 
@@ -83,6 +83,6 @@ class Pitch(db.Model):
         return pitch
     
     @classmethod
-    def get2_pitches(cls, category):
+    def get_pitches(cls, category):
         pitches = Pitch.query.filter_by(id=id).first()
-        return pitch
+        return pitches

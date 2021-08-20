@@ -90,7 +90,8 @@ def viewPitch(id):
     eachpitch = Pitch.getPitchId(id)
     comments = Comment.getComments(id)
 
-    
+    return redirect("/{pitch_id}".format(pitch_id=id))
+
     commentForm = CommentForm()
     if commentForm.validate_on_submit():
         comment = commentForm.text.data

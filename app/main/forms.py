@@ -6,7 +6,7 @@ class PitchForm(FlaskForm):
     pitch_title = StringField('Pitch title', validators=[Required()])
     pitch_category = SelectField('Pitch category',choices=[('Select a category','Select a category'),('Product','Product'),('Promotions','Promotions'),('Business','Business'),('Pickup lines', 'Pickup lines')], validators=[Required()])
     pitch_comment = StringField('What is in your mind?')
-    submit = SubmitField('Pitch')
+    submit = SubmitField(' submitPitch')
     
 class CommentForm(FlaskForm):
     comment = TextAreaField('What do you think about this?', validators=[Required()])

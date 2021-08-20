@@ -1,31 +1,33 @@
-{% extends 'base.html' %} {% block styles %} {{ super() }}
+{% extends 'base.html' %} {% import 'bootstrap/wtf.html' as wtf%} {% block styles %} {{ super() }}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}"> {% endblock %} {%block content %}
 <div class="container">
     <div class="text-center">
-        <h1>WELCOME TO THE PITCH</h1>
-        <h4>Put Down What you got</h4>
-        <button class="btn btn-lg bg-primary">PITCH YOUR IDEA</button>
+        <h1>WELCOME TO PITCHING WORLD</h1>
+        <h4><em>PUT DOWN YOUR IDEA</em></h4>
+        <button class="btn btn-lg bg-primary"><a href="/newpitch" class="tag"> ENTER NEW PITCH</a></button>
     </div>
+    {%for pitch in promotionPitches%} {{pitch.pitch_title}} {%endfor%}
     <hr>
 </div>
 {%for pitch in pitches %}
 <div class="container">
-    <div class="">
+    <div class="home">
         <div>
             <h4>Category: {{pitch.pitch_category}}</h4>
         </div>
         <div>
             <h6>Title: {{pitch.pitch_title}}</h6>
         </div>
-        <div>
+        <div class="pitch">
             <h6>{{pitch.pitch_comment}}</h6>
-            <p>Posted on {{pitch.posted}}</p>
-            <a href="/comments/{{pitch.id}}?like=1">
-                <img src="../static/icons/thumbs_up.gif" alt="Icon" width="40px" height="40px"></a>
-            {{pitch.likes}}
-            <a href="/comments/{{pitch.id}}?dislike=1">
-                <img src="../static/icons/icons8-unlike-48.png" alt="Down" width="40px" height="40px"></a>
-            {{pitch.dislikes}}
+            <p>Posted on {{pitch.posted.strftime('%Y-%m-%d')}}</p>
+            <a href="/{{pitch.id}}?like=1">
+                <i class="fas fa-thumbs-up"></a>
+                {{pitch.likes}}
+                <a href="/{{pitch.id}}?dislike=1">
+                    <i class="fas fa-thumbs-down"></a>
+                    {{pitch.dislikes}}
         </div>
     </div>
     <hr>
